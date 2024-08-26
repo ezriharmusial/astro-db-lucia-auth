@@ -1,4 +1,4 @@
-import { lucia } from '@/auth';
+import { lucia } from '../../../auth';
 import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
 import { db, User } from 'astro:db';

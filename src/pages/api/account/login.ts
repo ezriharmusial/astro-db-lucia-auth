@@ -1,4 +1,4 @@
-import { lucia } from '@/auth';
+import { lucia } from '../../../auth';
 import { Argon2id } from 'oslo/password';
 import { db, User, eq } from 'astro:db';
 import type { APIContext } from 'astro';
