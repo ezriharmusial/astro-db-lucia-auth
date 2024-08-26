@@ -1,0 +1,17 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export const prerender = false;
+
+const user = Astro.locals.user;
+
+if (!user) {
+    return Astro.redirect('/account/login');
+}
+---
+
+<Layout title="Welcome to Astro.">
+    <section class="pt-14 pb-24 lg:pb-52 lg:pt-40">
+        <div class="container">Welcome to your Account</div>
+    </section>
+</Layout>
