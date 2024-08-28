@@ -1,7 +1,8 @@
 import { lucia } from '../../../auth';
-import { Argon2id } from 'oslo/password';
 import { db, User, eq } from 'astro:db';
 import type { APIContext } from 'astro';
+// import { Argon2id } from 'oslo/password';
+import { hash } from '@node-rs/argon2';
 
 export const prerender = false;
 
@@ -44,10 +45,18 @@ export async function POST(context: APIContext): Promise<Response> {
     });
   }
 
-  const validPassword = await new Argon2id().verify(
-    existingUser.hashed_password,
-    password,
-  );
+  const validPassword = await hash(password, {
+    // recommended minimum parameters
+    memoryCost: 19456,
+    timeCost: 2,
+    outputLen: 32,
+    parallelism: 1
+  });
+
+  // await new Argon2id().verify(
+  //   existingUser.hashed_password,
+  //   password,
+  // );
 
   if (!validPassword) {
     return new Response('Incorrect username or password', {

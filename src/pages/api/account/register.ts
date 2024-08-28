@@ -1,6 +1,7 @@
 import { lucia } from '../../../auth';
 import { generateId } from 'lucia';
-import { Argon2id } from 'oslo/password';
+// import { Argon2id } from 'oslo/password';
+import { hash } from '@node-rs/argon2';
 import { db, User } from 'astro:db';
 
 import type { APIContext } from 'astro';
@@ -34,7 +35,15 @@ export async function POST(context: APIContext): Promise<Response> {
   }
 
   const userId = generateId(15);
-  const hashedPassword = await new Argon2id().hash(password);
+  const hashedPassword = await hash(password, {
+    // recommended minimum parameters
+    memoryCost: 19456,
+    timeCost: 2,
+    outputLen: 32,
+    parallelism: 1
+  });
+
+  // await new Argon2id().hash(password);
 
   // TODO: check if username is already used
   await db.insert(User).values({
